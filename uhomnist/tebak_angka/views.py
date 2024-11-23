@@ -7,6 +7,7 @@ import os
 
 # Muat model hanya sekali saat aplikasi dimulai
 # model = load_model('path/to/model.h5')
+model = load_model('./model_creation/mnist_model.h5')
 
 def photo_upload(request):
     if request.method == 'POST':
@@ -25,8 +26,8 @@ def photo_upload(request):
             img_array = img_array / 255.0  # Normalisasi jika diperlukan
             result = img_array
             # # Prediksi dengan model
-            # predictions = model.predict(img_array)
-            # result = np.argmax(predictions, axis=1)  # Sesuaikan dengan kebutuhan output model
+            predictions = model.predict(img_array)
+            result = np.argmax(predictions, axis=1)  # Sesuaikan dengan kebutuhan output model
 
             # Tampilkan hasil prediksi
             return render(request, 'tebak_angka/result.html', {'result': result})
