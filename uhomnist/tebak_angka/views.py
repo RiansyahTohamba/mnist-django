@@ -1,13 +1,15 @@
 from django.shortcuts import render
+from django.conf import settings
 from .forms import PhotoUploadForm
-from tensorflow.keras.models import load_model
-from tensorflow.keras.preprocessing import image
+from tensorflow.keras.models import load_model # type: ignore
+from PIL import Image
+
 import numpy as np
 import os
 
 # Muat model hanya sekali saat aplikasi dimulai
-# model = load_model('path/to/model.h5')
-model = load_model('./model_creation/mnist_model.h5')
+model_path = os.path.join(settings.BASE_DIR, 'ai_models', 'mnist_model.h5')
+model = load_model(model_path)
 
 def photo_upload(request):
     if request.method == 'POST':
@@ -17,20 +19,16 @@ def photo_upload(request):
             uploaded_photo = form.save()
 
             # Path ke file foto yang diunggah
-            photo_path = uploaded_photo.photo.path
+            image_path = uploaded_photo.photo.path
+            img = Image.open(image_path).convert('L').resize((28, 28))
+            img_array = np.array(img).reshape(1, 28, 28, 1) / 255.0
 
-            # Proses foto dengan model Keras
-            img = image.load_img(photo_path, target_size=(224, 224))  # Sesuaikan ukuran input model
-            img_array = image.img_to_array(img)
-            img_array = np.expand_dims(img_array, axis=0)
-            img_array = img_array / 255.0  # Normalisasi jika diperlukan
-            result = img_array
-            # # Prediksi dengan model
+            # Prediksi dengan model
             predictions = model.predict(img_array)
             result = np.argmax(predictions, axis=1)  # Sesuaikan dengan kebutuhan output model
-
+            confidence_score = np.max(predictions)
             # Tampilkan hasil prediksi
-            return render(request, 'tebak_angka/result.html', {'result': result})
+            return render(request, 'tebak_angka/result.html', {'result': result , 'confidence_score': confidence_score})
     else:
         form = PhotoUploadForm()
     
