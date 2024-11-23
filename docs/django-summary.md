@@ -16,7 +16,9 @@ my_project/
 │   ├── settings.py            # Konfigurasi proyek, termasuk `MEDIA_ROOT` dan `MEDIA_URL`
 │   ├── urls.py                # URL routing utama proyek
 │   ├── wsgi.py
-├── photo_uploader/            # Aplikasi Django untuk fitur unggahan foto
+├── ai_models/            # Aplikasi Django untuk fitur unggahan foto
+│   ├── mnist_model.h5
+├── tebak_angka/            # Aplikasi Django untuk fitur unggahan foto
 │   ├── migrations/
 │   │   ├── __init__.py        # File migrasi database
 │   ├── __init__.py
@@ -25,10 +27,10 @@ my_project/
 │   ├── forms.py               # Form untuk unggahan foto
 │   ├── models.py              # Model untuk menyimpan foto
 │   ├── tests.py
-│   ├── urls.py                # URL routing untuk app `photo_uploader`
+│   ├── urls.py                # URL routing untuk app `tebak_angka`
 │   ├── views.py               # View untuk menangani unggahan dan prediksi
 ├── templates/                 # Template HTML
-│   ├── photo_uploader/
+│   ├── tebak_angka/
 │   │   ├── upload.html        # Halaman form unggahan foto
 │   │   ├── result.html        # Halaman untuk menampilkan hasil prediksi
 ├── media/                     # Folder untuk menyimpan file yang diunggah (dibuat otomatis)
@@ -37,4 +39,3 @@ my_project/
 ├── static/                    # (Opsional) Folder untuk file statis, seperti CSS atau JS
 ├── manage.py                  # Perintah manajemen Django
 ├── requirements.txt           # Daftar dependensi (misalnya, `Django`, `tensorflow`)
-├── path/to/model.h5           # File model Keras
